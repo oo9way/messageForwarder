@@ -1,0 +1,34 @@
+name: Deploy Python Service
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy via SSH
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+      run: |
+        echo "${SSH_PRIVATE_KEY}" > private_key
+        chmod 600 private_key
+        ssh -i private_key ${SSH_USER}@${SSH_HOST} << 'EOF'
+          cd /home/projects/messageForwarder
+          git pull origin main
+          source venv/bin/activate
+          pip install -r req.txt
+          sudo systemctl restart messageScraper.service
+        EOF
+        rm private_key
