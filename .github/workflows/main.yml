@@ -1,35 +1,29 @@
-name: Deploy Python Service
+name: Deploy
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Deploy via SSH
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+#        ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
+
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
+
+    - name: Deploy to server
       run: |
-        eval $(ssh-agent -s)
-        echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
-        ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
-          cd /home/projects/messageForwarder
-          git pull origin master
-          source venv/bin/activate
-          pip install -r req.txt
-          sudo systemctl restart messageScraper.service
-        EOF
+#        ssh root@38.242.212.164 "cd /home/projects/your/project && git pull && ./deploy_script.sh"
+        ssh root@38.242.212.164 "echo 'Hello World'"
