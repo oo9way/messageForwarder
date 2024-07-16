@@ -16,6 +16,6 @@ jobs:
         script: |
           cd ${{ secrets.PROJECT_PATH }}
           source ${{ secrets.ENV_PATH }}
-          pip install -r requirements.txt
+          pip install -r req.txt
           git pull origin master
           systemctl restart ${{ secrets.SERVICE_NAME }}
