@@ -18,12 +18,10 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-#        ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
+        ssh-keyscan -H 38.242.212.164 >> ~/.ssh/known_hosts
 
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Deploy to server
-      run: |
-#        ssh root@38.242.212.164 "cd /home/projects/your/project && git pull && ./deploy_script.sh"
-        ssh root@38.242.212.164 "echo 'Hello World'"
+      run: ssh root@38.242.212.164 "echo 'Hello World'"
