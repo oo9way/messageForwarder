@@ -14,5 +14,8 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script:
-          echo "Hello World"
-          echo "Hello World 2"
+          cd ${{ secrets.PROJECT_PATH }}
+          source ${{ secrets.ENV_PATH }}
+          pip install -r requirements.txt
+          git pull origin master
+          systemctl restart ${{ secrets.SERVICE_NAME }}
