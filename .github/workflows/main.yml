@@ -13,4 +13,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-      run: echo "Hello World"
+        script:
+          echo "Hello World"
+          echo "Hello World 2"
