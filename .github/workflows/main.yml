@@ -13,7 +13,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script:
+        script: |
           cd ${{ secrets.PROJECT_PATH }}
           source ${{ secrets.ENV_PATH }}
           pip install -r requirements.txt
